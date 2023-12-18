@@ -5,7 +5,37 @@
   <main>
     <h1>New Account</h1>
     <form action="" method="">
-      
+      <p class="">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </p>
+      <p class="">
+        <label for="confirm-email">Confirm Email</label>
+        <input type="email" id="confirm-email" name="confirm-email" required />
+      </p>
+      <p class="">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required minlength="8" />
+      </p>
+      <hr />
+      <p class="">
+        <label for="full-name">Full Name</label>
+        <input type="text" id="full-name" name="full-name" required />
+      </p>
+      <p class="">
+        <label for="street">Street</label>
+        <input type="text" id="street" name="street" required />
+      </p>
+      <p class="">
+        <label for="postal">Postal Code</label>
+        <input type="text" id="postal" name="postal" required minlength="6"/>
+      </p>
+      <p class="">
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required />
+      </p>
+      <button class="btn">Create</button>
+      <p class="switch-form"><a href="/login">Login</a></p>
     </form>
   </main>
   <%- include("../includes/footer.ejs") %>
