@@ -1,9 +1,12 @@
 const path = require("path");
 
 const express = require("express");
+const csurf = require("csurf");
 
 const database = require("./database/database.js");
 const authRoutes = require("./routes/auth-routes");
+
+const csrfTokenMiddleware = require("./middlewares/csrf-token.js");
 
 const app = express();
 
@@ -12,6 +15,11 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
+
+// check if post requests have csrf token or not
+app.use(csurf());
+
+app.use(csrfTokenMiddleware);
 
 app.use(authRoutes);
 
