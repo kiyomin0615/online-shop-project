@@ -1,11 +1,28 @@
 const User = require("../models/user-model.js");
 const authentication = require("../utils/authentication.js");
+const validation = require("../utils/validation.js");
 
 function getSignup(req, res) {
   res.render("customer/auth/signup.ejs");
 }
 
 async function signup(req, res, next) {
+  // validation
+  if (
+    !validation.userDetailsAreValid(
+      req.body.email,
+      req.body.password,
+      req.body.fullname,
+      req.body.street,
+      req.body.postal,
+      req.body.city
+    ) ||
+    !validation.emailIsConfirmed(req.body.email, req.body["confirm-email"])
+  ) {
+    res.redirect("/signup");
+    return;
+  }
+
   const user = new User(
     req.body.email,
     req.body.password,
@@ -17,6 +34,11 @@ async function signup(req, res, next) {
 
   // express can't catch errors which occured inside asynchronous functions by default
   try {
+    if (await user.existAlready()) {
+      res.redirect("/signup");
+      return;
+    }
+
     await user.signup();
   } catch (error) {
     next(error);

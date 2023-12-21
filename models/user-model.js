@@ -32,6 +32,12 @@ class User {
       .findOne({ email: this.email });
   }
 
+  async existAlready() {
+    const existingUser = await this.getUserWithSameEmail();
+
+    return existingUser ? true : false;
+  }
+
   hasMatchingPassword(hashedPassword) {
     return bcryptjs.compare(this.password, hashedPassword);
   }
