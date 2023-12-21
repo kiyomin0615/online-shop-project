@@ -14,6 +14,7 @@ const createSessionConfig = require("./configs/session-config.js");
 
 const csrfTokenMiddleware = require("./middlewares/csrf-token.js");
 const errorHandlerMiddleware = require("./middlewares/error-handler.js");
+const checkAuthMiddleware = require("./middlewares/check-auth.js");
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.use(expressSession(sessionConfig));
 // check if post requests have csrf token or not
 app.use(csurf());
 app.use(csrfTokenMiddleware);
+
+app.use(checkAuthMiddleware);
 
 app.use(baseRoutes);
 app.use(authRoutes);
