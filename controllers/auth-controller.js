@@ -5,7 +5,7 @@ function getSignup(req, res) {
   res.render("customer/auth/signup.ejs");
 }
 
-async function signup(req, res) {
+async function signup(req, res, next) {
   const user = new User(
     req.body.email,
     req.body.password,
@@ -15,7 +15,13 @@ async function signup(req, res) {
     req.body.city
   );
 
-  await user.signup();
+  // express can't catch errors which occured inside asynchronous functions by default
+  try {
+    await user.signup();
+  } catch (error) {
+    next(error);
+    return;
+  }
 
   res.redirect("/login");
 }
@@ -24,10 +30,16 @@ function getLogin(req, res) {
   res.render("customer/auth/login.ejs");
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
   // check email
   const user = new User(req.body.email, req.body.password);
-  const existingUser = await user.getUserWithSameEmail();
+  let existingUser;
+  try {
+    existingUser = await user.getUserWithSameEmail();
+  } catch (error) {
+    next(error);
+    return;
+  }
 
   if (!existingUser) {
     res.redirect("/login");
