@@ -5,7 +5,10 @@ const csurf = require("csurf");
 const expressSession = require("express-session");
 
 const database = require("./database/database.js");
+
+const baseRoutes = require("./routes/base-routes");
 const authRoutes = require("./routes/auth-routes");
+const productsRoutes = require("./routes/products-routes");
 
 const createSessionConfig = require("./configs/session-config.js");
 
@@ -27,7 +30,9 @@ app.use(expressSession(sessionConfig));
 app.use(csurf());
 app.use(csrfTokenMiddleware);
 
+app.use(baseRoutes);
 app.use(authRoutes);
+app.use(productsRoutes);
 
 app.use(errorHandlerMiddleware);
 
